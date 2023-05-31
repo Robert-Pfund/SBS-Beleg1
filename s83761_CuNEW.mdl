@@ -1,5 +1,31 @@
 {UTF-8}
-"Kupferpreis - Veränderung in %"=
+Abbaukapazität=
+	DELAY FIXED(Angebot * (-0.05), Bauzeit, 0)
+	~	
+	~		|
+
+Angebot= INTEG (
+	Kapazitätserweiterung,
+		80)
+	~	
+	~		|
+
+Ausbaukapazität=
+	DELAY FIXED(Angebot * 0.05, Bauzeit, 0)
+	~	
+	~		|
+
+Kapazitätserweiterung=
+	IF THEN ELSE( Nachfrage > Angebot, Ausbaukapazität, Abbaukapazität)
+	~	
+	~		|
+
+Bauzeit=
+	2
+	~	
+	~		|
+
+"Kupferpreis - Veränderungsfaktor"=
 	"Kupferpreise (Lookup)"(Time)/"Kupferpreise (Lookup)"(Time-1)
 	~	
 	~		|
@@ -13,8 +39,8 @@
 	~		|
 
 Nachfrage= INTEG (
-	IF THEN ELSE("Kupferpreis - Veränderung in %" > 1, Nachfrage * -0.01, Nachfrage * 0.01\
-		),
+	IF THEN ELSE("Kupferpreis - Veränderungsfaktor" > 1, Nachfrage * (1-"Kupferpreis - Veränderungsfaktor"\
+		), Nachfrage *  (1-"Kupferpreis - Veränderungsfaktor")),
 		100)
 	~	
 	~		|
@@ -36,7 +62,7 @@ INITIAL TIME  = 1990
 	|
 
 SAVEPER  = 
-        TIME STEP 
+        TIME STEP
 	~	Year [0,?]
 	~	The frequency with which output is stored.
 	|
@@ -50,15 +76,47 @@ TIME STEP  = 0.03125
 V300  Do not put anything below this section - it will be ignored
 *View 1
 $192-192-192,0,Times New Roman|12||0-0-0|0-0-0|0-0-255|-1--1--1|-1--1--1|96,96,100,0
-10,1,"Kupferpreise (Lookup)",343,275,42,19,8,3,0,0,0,0,0,0
-10,2,"Kupferpreis - Veränderung in %",624,229,114,18,8,131,0,0,0,0,0,0
-1,3,1,2,0,0,0,0,0,64,0,-1--1--1,,1|(442,259)|
-10,4,Time,617,117,26,11,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|0||128-128-128
-1,5,4,2,1,0,0,0,0,64,0,-1--1--1,,1|(641,162)|
-10,6,Nachfrage,625,366,61,29,3,131,0,0,0,0,0,0
-1,7,2,6,0,0,0,0,0,64,0,-1--1--1,,1|(624,285)|
+10,1,"Kupferpreise (Lookup)",343,207,42,19,8,3,0,0,0,0,0,0
+10,2,"Kupferpreis - Veränderungsfaktor",624,161,114,18,8,131,0,0,0,0,0,0
+1,3,1,2,0,0,0,0,0,64,0,-1--1--1,,1|(442,191)|
+10,4,Time,617,49,26,11,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128
+1,5,4,2,1,0,0,0,0,64,0,-1--1--1,,1|(641,94)|
+10,6,Nachfrage,625,298,61,29,3,131,0,0,0,0,0,0
+1,7,2,6,0,0,0,0,0,64,0,-1--1--1,,1|(624,217)|
+10,8,Angebot,628,461,66,27,3,131,0,0,0,0,0,0
+10,9,Bauzeit,75,419,24,11,8,3,0,0,0,0,0,0
+10,10,Ausbaukapazität,165,321,52,11,8,3,0,0,0,0,0,0
+10,11,Abbaukapazität,172,512,50,11,8,3,0,0,0,0,0,0
+10,12,Kapazitätserweiterung,392,397,91,24,8,131,0,0,0,0,0,0
+1,13,6,12,0,0,0,0,0,64,0,-1--1--1,,1|(512,345)|
+1,14,8,12,0,0,0,0,0,64,0,-1--1--1,,1|(527,434)|
+1,15,9,10,0,0,0,0,0,64,0,-1--1--1,,1|(114,375)|
+1,16,10,12,0,0,0,0,0,64,0,-1--1--1,,1|(251,350)|
+1,17,11,12,0,0,0,0,0,64,0,-1--1--1,,1|(263,464)|
+1,18,12,8,1,0,0,0,0,64,0,-1--1--1,,1|(440,570)|
+1,19,9,11,0,0,0,0,0,64,0,-1--1--1,,1|(117,460)|
+1,20,8,10,1,0,0,0,0,64,0,-1--1--1,,1|(455,280)|
+1,21,8,11,1,0,0,0,0,64,0,-1--1--1,,1|(473,684)|
 ///---\\\
+:GRAPH Nachfrage_und_Angebot
+:TITLE Nachfrage und Angebot
+:SCALE
+:VAR Nachfrage
+:SCALE
+:VAR Angebot
+:SCALE
+:VAR "Kupferpreis - Veränderung in %"
+
+:GRAPH Preisänderung__Nachfrag
+:TITLE Preisänderung, Nachfrage
+:SCALE
+:VAR "Kupferpreis - Veränderungsfaktor"
+:SCALE
+:VAR Nachfrage
+:SCALE
+:VAR Angebot
 :L<%^E!@
+1:Current.vdf
 1:C:\Users\RP\Desktop\SBS_port\Current.vdf
 9:Current
 23:0
@@ -67,7 +125,7 @@ $192-192-192,0,Times New Roman|12||0-0-0|0-0-0|0-0-255|-1--1--1|-1--1--1|96,96,1
 27:2,
 34:0,
 4:Time
-5:Nachfrage
+5:Ausbaukapazität
 35:Date
 36:YYYY-MM-DD
 37:2000
