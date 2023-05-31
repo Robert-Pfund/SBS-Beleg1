@@ -1,4 +1,16 @@
 {UTF-8}
+Entscheidung nach 2015=
+	RANDOM NORMAL(0.75, 1.5 , 1.125, 0.375, 0)
+	~	
+	~		|
+
+Nachfrage= INTEG (
+	IF THEN ELSE(Time < 2015, (Nachfrage * (1.01^(-1 * (1990-Time)))) * (1-"Kupferpreis - Veränderungsfaktor"\
+		), Nachfrage * (1.01^(-1 * (1990-Time))) * (1 - Entscheidung nach 2015)),
+		100)
+	~	
+	~		|
+
 Abbaukapazität=
 	DELAY FIXED(Angebot * Veränderung in Prozent * 1/2, Bauzeit, 0)
 	~	
@@ -43,20 +55,13 @@ Bauzeit=
 	~	
 	~		|
 
-Nachfrage= INTEG (
-	IF THEN ELSE("Kupferpreis - Veränderungsfaktor" > 1, Nachfrage * (1-"Kupferpreis - Veränderungsfaktor"\
-		), Nachfrage *  (1-"Kupferpreis - Veränderungsfaktor")),
-		100)
-	~	
-	~		|
-
 ********************************************************
 	.Control
 ********************************************************~
 		Simulation Control Parameters
 	|
 
-FINAL TIME  = 2015
+FINAL TIME  = 2030
 	~	Year
 	~	The final time for the simulation.
 	|
@@ -72,7 +77,7 @@ SAVEPER  =
 	~	The frequency with which output is stored.
 	|
 
-TIME STEP  = 0.03125
+TIME STEP  = 0.25
 	~	Year [0,?]
 	~	The time step for the simulation.
 	|
@@ -101,11 +106,14 @@ $192-192-192,0,Times New Roman|12||0-0-0|0-0-0|0-0-255|-1--1--1|-1--1--1|96,96,1
 1,18,12,8,1,0,0,0,0,64,0,-1--1--1,,1|(582,587)|
 1,19,9,11,0,0,0,0,0,64,0,-1--1--1,,1|(259,477)|
 1,20,8,10,1,0,0,0,0,64,0,-1--1--1,,1|(597,297)|
-1,21,8,11,1,0,0,0,0,64,0,-1--1--1,,1|(615,701)|
+1,21,8,11,1,0,0,0,0,64,0,-1--1--1,,1|(618,675)|
 10,22,Veränderung in Prozent,405,90,49,19,8,3,0,0,0,0,0,0
 1,23,2,22,0,0,0,0,0,64,0,-1--1--1,,1|(580,132)|
 1,24,22,10,1,0,0,0,0,64,0,-1--1--1,,1|(207,226)|
 1,25,22,11,1,0,0,0,0,64,0,-1--1--1,,1|(95,377)|
+10,26,Entscheidung nach 2015,1006,396,59,19,8,3,0,0,0,0,0,0
+1,27,26,6,1,0,0,0,0,64,0,-1--1--1,,1|(859,313)|
+1,28,4,6,1,0,0,0,0,64,0,-1--1--1,,1|(886,188)|
 ///---\\\
 :GRAPH Nachfrage_und_Angebot
 :TITLE Nachfrage und Angebot
@@ -131,6 +139,11 @@ $192-192-192,0,Times New Roman|12||0-0-0|0-0-0|0-0-255|-1--1--1|-1--1--1|96,96,1
 :VAR Angebot
 :SCALE
 :VAR Nachfrage
+
+:GRAPH Entw._nach_2015
+:TITLE Entw. nach 2015
+:SCALE
+:VAR Entscheidung nach 2015
 :L<%^E!@
 1:Current.vdf
 1:C:\Users\RP\Desktop\SBS_port\Current.vdf
@@ -141,7 +154,7 @@ $192-192-192,0,Times New Roman|12||0-0-0|0-0-0|0-0-255|-1--1--1|-1--1--1|96,96,1
 27:2,
 34:0,
 4:Time
-5:Kapazitätserweiterung
+5:Nachfrage
 35:Date
 36:YYYY-MM-DD
 37:2000
@@ -151,5 +164,5 @@ $192-192-192,0,Times New Roman|12||0-0-0|0-0-0|0-0-255|-1--1--1|-1--1--1|96,96,1
 41:0
 42:1
 24:1990
-25:2015
-26:2015
+25:2030
+26:2030

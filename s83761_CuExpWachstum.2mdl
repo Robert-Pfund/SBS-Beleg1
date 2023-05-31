@@ -1,0 +1,178 @@
+{UTF-8}
+Abbaukapazität=
+	DELAY FIXED(Angebot * Insgesamtveränderung * 1/2, Bauzeit, 0)
+	~	
+	~		|
+
+Insgesamtveränderung=
+	IF THEN ELSE(Time > 2015, 1-Entscheidung nach 2015, Veränderung in Prozent)
+	~	
+	~		|
+
+Ausbaukapazität=
+	DELAY FIXED(Angebot * Insgesamtveränderung, Bauzeit, 0)
+	~	
+	~		|
+
+Entscheidung nach 2015=
+	RANDOM NORMAL(0.75, 1.5 , 1.125, 0.375, 0)
+	~	
+	~		|
+
+Nachfrage= INTEG (
+	IF THEN ELSE(Time < 2015, Nachfrage * (1-"Kupferpreis - Veränderungsfaktor") + (Nachfrage\
+		 * 0.03), Nachfrage * (1 - Entscheidung nach 2015) + (Nachfrage * 0.01)),
+		100)
+	~	
+	~		|
+
+Veränderung in Prozent=
+	(1-"Kupferpreis - Veränderungsfaktor")
+	~	
+	~		|
+
+Angebot= INTEG (
+	Kapazitätserweiterung,
+		100)
+	~	
+	~		|
+
+Kapazitätserweiterung=
+	IF THEN ELSE( Nachfrage > Angebot, Ausbaukapazität, Abbaukapazität)
+	~	
+	~		|
+
+Bauzeit=
+	2
+	~	
+	~		|
+
+"Kupferpreis - Veränderungsfaktor"=
+	"Kupferpreise (Lookup)"(Time)/"Kupferpreise (Lookup)"(Time-1)
+	~	
+	~		|
+
+"Kupferpreise (Lookup)"(
+	[(0,0)-(3000,3000)],(1989,106),(1990,116.85),(1991,98),(1992,104),(1993,83),(1994,139\
+		),(1995,121),(1996,100),(1997,78),(1998,67),(1999,86),(2000,84),(2001,66),(2002,70)\
+		,(2003,105),(2004,149),(2005,204),(2006,285),(2007,303),(2008,140),(2009,334),(2010\
+		,443),(2011,343),(2012,365),(2013,339),(2014,283),(2015,214))
+	~	
+	~		|
+
+********************************************************
+	.Control
+********************************************************~
+		Simulation Control Parameters
+	|
+
+FINAL TIME  = 2030
+	~	Year
+	~	The final time for the simulation.
+	|
+
+INITIAL TIME  = 1990
+	~	Year
+	~	The initial time for the simulation.
+	|
+
+SAVEPER  = 
+        TIME STEP
+	~	Year [0,?]
+	~	The frequency with which output is stored.
+	|
+
+TIME STEP  = 0.25
+	~	Year [0,?]
+	~	The time step for the simulation.
+	|
+
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*View 1
+$192-192-192,0,Times New Roman|12||0-0-0|0-0-0|0-0-255|-1--1--1|-1--1--1|96,96,100,0
+10,1,"Kupferpreise (Lookup)",487,230,42,19,8,3,0,0,0,0,0,0
+10,2,"Kupferpreis - Veränderungsfaktor",768,184,114,18,8,131,0,0,0,0,0,0
+1,3,1,2,0,0,0,0,0,64,0,-1--1--1,,1|(586,214)|
+10,4,Time,761,72,26,11,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128
+1,5,4,2,1,0,0,0,0,64,0,-1--1--1,,1|(785,117)|
+10,6,Nachfrage,769,321,61,29,3,131,0,0,0,0,0,0
+1,7,2,6,0,0,0,0,0,64,0,-1--1--1,,1|(768,240)|
+10,8,Angebot,772,484,66,27,3,131,0,0,0,0,0,0
+10,9,Bauzeit,219,442,24,11,8,3,0,0,0,0,0,0
+10,10,Ausbaukapazität,309,344,52,11,8,3,0,0,0,0,0,0
+10,11,Abbaukapazität,316,535,50,11,8,3,0,0,0,0,0,0
+10,12,Kapazitätserweiterung,536,420,91,24,8,131,0,0,0,0,0,0
+1,13,6,12,0,0,0,0,0,64,0,-1--1--1,,1|(656,368)|
+1,14,8,12,0,0,0,0,0,64,0,-1--1--1,,1|(671,457)|
+1,15,9,10,0,0,0,0,0,64,0,-1--1--1,,1|(258,398)|
+1,16,10,12,0,0,0,0,0,64,0,-1--1--1,,1|(395,373)|
+1,17,11,12,0,0,0,0,0,64,0,-1--1--1,,1|(407,487)|
+1,18,12,8,1,0,0,0,0,64,0,-1--1--1,,1|(584,593)|
+1,19,9,11,0,0,0,0,0,64,0,-1--1--1,,1|(261,483)|
+1,20,8,10,1,0,0,0,0,64,0,-1--1--1,,1|(599,303)|
+1,21,8,11,1,0,0,0,0,64,0,-1--1--1,,1|(620,681)|
+10,22,Veränderung in Prozent,407,96,49,19,8,3,0,0,0,0,0,0
+1,23,2,22,0,0,0,0,0,64,0,-1--1--1,,1|(582,138)|
+1,24,22,31,1,0,0,0,0,64,0,-1--1--1,,1|(209,232)|
+10,26,Entscheidung nach 2015,1008,402,59,19,8,3,0,0,0,0,0,0
+1,27,26,6,1,0,0,0,0,64,0,-1--1--1,,1|(861,319)|
+1,28,4,6,1,0,0,0,0,64,0,-1--1--1,,1|(888,194)|
+1,30,26,31,1,0,0,0,0,64,0,-1--1--1,,1|(425,-7)|
+10,31,Insgesamtveränderung,162,240,40,20,8,3,0,0,0,0,0,0
+1,32,31,10,1,0,0,0,0,64,0,-1--1--1,,1|(185,251)|
+1,33,31,11,1,0,0,0,0,64,0,-1--1--1,,1|(147,472)|
+10,34,Time,81,83,26,11,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|0||128-128-128
+1,35,34,31,0,0,0,0,0,64,0,-1--1--1,,1|(115,150)|
+///---\\\
+:GRAPH Nachfrage_und_Angebot
+:TITLE Nachfrage und Angebot
+:SCALE
+:VAR Nachfrage
+:SCALE
+:VAR Angebot
+:SCALE
+:VAR "Kupferpreis - Veränderung in %"
+
+:GRAPH Preisänderung__Nachfrag
+:TITLE Preisänderung, Nachfrage
+:SCALE
+:VAR "Kupferpreis - Veränderungsfaktor"
+:SCALE
+:VAR Nachfrage
+:SCALE
+:VAR Angebot
+
+:GRAPH Kontrolle
+:TITLE Kontrolle
+:SCALE
+:VAR Angebot
+:SCALE
+:VAR Nachfrage
+
+:GRAPH Entw._nach_2015
+:TITLE Entw. nach 2015
+:SCALE
+:VAR Entscheidung nach 2015
+:L<%^E!@
+1:Current.vdf
+1:C:\Users\RP\Desktop\SBS_port\Current.vdf
+9:Current
+23:0
+15:0,0,0,1,0,0
+19:100,0
+27:2,
+34:0,
+4:Time
+5:Abbaukapazität
+35:Date
+36:YYYY-MM-DD
+37:2000
+38:1
+39:1
+40:0
+41:0
+42:1
+24:1990
+25:2030
+26:2030

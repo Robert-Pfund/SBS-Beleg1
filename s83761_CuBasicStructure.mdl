@@ -67,7 +67,7 @@ INITIAL TIME  = 1990
 	|
 
 SAVEPER  = 
-        TIME STEP
+        TIME STEP 
 	~	Year [0,?]
 	~	The frequency with which output is stored.
 	|
@@ -132,16 +132,17 @@ $192-192-192,0,Times New Roman|12||0-0-0|0-0-0|0-0-255|-1--1--1|-1--1--1|96,96,1
 :SCALE
 :VAR Nachfrage
 :L<%^E!@
+1:Basic.vdf
 1:Current.vdf
 1:C:\Users\RP\Desktop\SBS_port\Current.vdf
-9:Current
+9:Basic
 23:0
 15:0,0,0,1,0,0
 19:100,0
 27:2,
 34:0,
 4:Time
-5:Kapazitätserweiterung
+5:Nachfrage
 35:Date
 36:YYYY-MM-DD
 37:2000
@@ -151,5 +152,5 @@ $192-192-192,0,Times New Roman|12||0-0-0|0-0-0|0-0-255|-1--1--1|-1--1--1|96,96,1
 41:0
 42:1
 24:1990
-25:2015
-26:2015
+25:2030
+26:2030
